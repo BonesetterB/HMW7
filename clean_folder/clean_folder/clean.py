@@ -47,11 +47,10 @@ def normalize(name):
         TRANS[ord(c)] = l
         TRANS[ord(c.upper())] = l.upper()
     return name.translate(TRANS)
-def clean_folder():
-    global re_name
-    global re_name_path
-    global name
-    for file_ in list_:
+def activated():
+    start=True
+activated()
+for file_ in list_:
             # Спершу беремо им'я та тип файла та створюємо шлях до файла
             name, ext = os.path.splitext(file_)
             file_ = os.path.join(path, file_)
