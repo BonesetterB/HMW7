@@ -5,5 +5,5 @@ setup(
     description='Very clean code',
     author='Illy',
     packages=find_namespace_packages(),
-    entry_points={'console_scripts': ['clean-folder=clean_folder.clean:activated']}
+    entry_points={'console_scripts': ['clean-folder=clean_folder.clean:path_1']}
 )

@@ -1,9 +1,13 @@
 import os
 import shutil
 from zipfile import ZipFile
-
-path = 'D:/Мотлох/'
-list_ = os.listdir(path)
+import sys
+def path_1():
+    global path
+    path=sys.argv[1]
+    list_ = os.listdir(path)
+    return list_
+    
 
 # Створюємо функцію для переміщення файлів, окрім архіва, бо для архівів є окрема функція
 
@@ -47,38 +51,35 @@ def normalize(name):
         TRANS[ord(c)] = l
         TRANS[ord(c.upper())] = l.upper()
     return name.translate(TRANS)
-def activated():
-    start=True
-activated()
-for file_ in list_:
-            # Спершу беремо им'я та тип файла та створюємо шлях до файла
-            name, ext = os.path.splitext(file_)
-            file_ = os.path.join(path, file_)
-            ext = ext[1:]
-            # Перевіряю чи це папка и чи вона пуста
-            if ext == '':
-                if name == 'images' or name == 'documents' or name == 'audio' or name == 'video' or name == 'archives':
-                    continue
+for file_ in path_1():
+                # Спершу беремо им'я та тип файла та створюємо шлях до файла
+                name, ext = os.path.splitext(file_)
+                file_ = os.path.join(path, file_)
+                ext = ext[1:]
+                # Перевіряю чи це папка и чи вона пуста
+                if ext == '':
+                    if name == 'images' or name == 'documents' or name == 'audio' or name == 'video' or name == 'archives':
+                        continue
+                    else:
+                        if not os.listdir(file_):
+                            os.rmdir(file_)
+                        else:
+                            continue
                 else:
-                    if not os.listdir(file_):
-                        os.rmdir(file_)
+                    # Далі нормалізую им'я файла та змінюю ім'я файла
+                    re_name = normalize(name)+'.'+ext
+                    re_name_path = path+re_name
+                    os.rename(file_, re_name_path)
+                    # Перевіряю до якої папки відправляти файл
+                    if ext == 'jpeg' or ext == 'png' or ext == 'jpg' or ext == 'svg' or ext == 'bmp':
+                        move('images')
+                    elif ext == 'doc' or ext == 'docx' or ext == 'txt' or ext == 'pdf' or ext == 'xlsx' or ext == 'pptx':
+                        move('documents')
+                    elif ext == 'mp3' or ext == 'ogg' or ext == 'wav' or ext == 'amr':
+                        move('audio')
+                    elif ext == 'mp4' or ext == 'avi' or ext == 'mov' or ext == 'mkv':
+                        move('video')
+                    elif ext == 'zip' or ext == 'gz' or ext == 'tar':
+                        zip_unpack()
                     else:
                         continue
-            else:
-                # Далі нормалізую им'я файла та змінюю ім'я файла
-                re_name = normalize(name)+'.'+ext
-                re_name_path = path+re_name
-                os.rename(file_, re_name_path)
-                # Перевіряю до якої папки відправляти файл
-                if ext == 'jpeg' or ext == 'png' or ext == 'jpg' or ext == 'svg' or ext == 'bmp':
-                    move('images')
-                elif ext == 'doc' or ext == 'docx' or ext == 'txt' or ext == 'pdf' or ext == 'xlsx' or ext == 'pptx':
-                    move('documents')
-                elif ext == 'mp3' or ext == 'ogg' or ext == 'wav' or ext == 'amr':
-                    move('audio')
-                elif ext == 'mp4' or ext == 'avi' or ext == 'mov' or ext == 'mkv':
-                    move('video')
-                elif ext == 'zip' or ext == 'gz' or ext == 'tar':
-                    zip_unpack()
-                else:
-                    continue
